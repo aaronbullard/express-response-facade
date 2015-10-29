@@ -4,11 +4,12 @@ module.exports = function(response)
 
   this.httpStatusCode = 200;
 
+  this.meta = {};
+
   var success = function(data){
     return {
-      http: this.httpStatusCode,
-      status: 'success',
-      data: data
+      data: data,
+      meta: this.meta
     };
   };
 
@@ -16,14 +17,21 @@ module.exports = function(response)
     var errors = errors || [];
 
     return {
-      http: this.httpStatusCode,
-      status: 'error',
       errors: {
         message: message,
         errors: errors
-      }
+      },
+      meta: this.meta
     };
   };
+
+
+  this.setMeta = function(meta)
+  {
+    this.meta = meta;
+
+    return this;
+  }
 
 
   this.respondOk = function(data)
